@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program Latihan — Andika Wijaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f5f3;
+    --surface:#ffffff;
+    --line:#dcdad4;
+    --ink:#17160f;
+    --muted:#6e6c64;
+    --muted-2:#a4a199;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    letter-spacing:0.01em;
+    margin:0;
+  }
+  ::selection{background:var(--ink);color:var(--bg);}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  svg.ex-icon{stroke:var(--ink);}
+
+  /* ---------- login screen ---------- */
+  .login-wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .login-card{
+    width:100%;
+    max-width:380px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:36px 32px;
+  }
+  .login-card .brand-mark{
+    font-family:'Big Shoulders Display';
+    font-weight:800;
+    font-size:28px;
+    margin-bottom:4px;
+  }
+  .login-card .brand-sub{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:28px;
+  }
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .field input{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--line);
+    background:var(--bg);
+    font-family:'Inter';
+    font-size:14.5px;
+    color:var(--ink);
+    border-radius:2px;
+  }
+  .field input:focus{
+    outline:none;
+    border-color:var(--ink);
+  }
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .login-card .btn{width:100%;justify-content:center;margin-top:8px;}
+  .login-note{
+    font-size:12px;
+    color:var(--muted-2);
+    margin-top:16px;
+    line-height:1.6;
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    min-height:100vh;
+  }
+  .rail{
+    border-right:1px solid var(--line);
+    padding:28px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:36px;
+  }
+  .brand{line-height:0.9;}
+  .brand .name{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:26px;
+    letter-spacing:0.01em;
+  }
+  .brand .sub{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:6px;
+    letter-spacing:0.02em;
+  }
+  nav{display:flex;flex-direction:column;gap:2px;}
+  .nav-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 10px;
+    font-size:14.5px;
+    color:var(--muted);
+    cursor:pointer;
+    border-left:2px solid transparent;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .nav-item:hover{color:var(--ink);}
+  .nav-item.active{
+    color:var(--ink);
+    border-left:2px solid var(--ink);
+    font-weight:600;
+  }
+  .rail-foot{
+    margin-top:auto;
+    font-size:11.5px;
+    color:var(--muted-2);
+    line-height:1.5;
+  }
+
+  main{
+    padding:36px 44px 60px;
+    max-width:980px;
+  }
+  .page-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px;
+  }
+  .page-head h1{font-size:34px;}
+  .page-head .date{font-size:13px;color:var(--muted);}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:32px;
+  }
+  .stat{background:var(--surface);padding:22px 20px;}
+  .stat .num{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:40px;
+    line-height:1;
+  }
+  .stat .label{font-size:12px;color:var(--muted);margin-top:8px;}
+
+  .today-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    padding:26px 28px;
+    margin-bottom:28px;
+  }
+  .today-card .eyebrow{font-size:12.5px;color:var(--muted);margin-bottom:6px;}
+  .today-card h2{font-size:26px;margin-bottom:4px;}
+  .today-card .focus{font-size:14px;color:var(--muted);margin-bottom:18px;}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--ink);
+    color:var(--bg);
+    border:none;
+    padding:11px 20px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    border-radius:2px;
+  }
+  .btn:hover{background:#000;}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--ink);}
+  .btn.big{padding:15px 26px;font-size:15.5px;}
+  .btn[disabled]{background:var(--muted-2);cursor:default;}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+  .week-strip{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .day-cell{
+    background:var(--surface);
+    padding:16px 12px;
+    cursor:pointer;
+    min-height:96px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:background .15s ease;
+  }
+  .day-cell:hover{background:#fbfbfa;}
+  .day-cell.is-today{box-shadow:inset 0 0 0 1.5px var(--ink);}
+  .day-cell .d-abbr{font-size:12px;color:var(--muted);}
+  .day-cell .d-title{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    margin-top:14px;
+    line-height:1.1;
+  }
+  .day-cell .d-dot{width:7px;height:7px;border-radius:50%;background:var(--ink);margin-top:10px;}
+  .day-cell .d-dot.empty{background:var(--line);}
+
+  section.block{margin-bottom:36px;}
+  section.block > h3{
+    font-size:13px;
+    color:var(--muted);
+    font-weight:600;
+    font-family:'Inter';
+    margin-bottom:14px;
+  }
+
+  .day-detail{border:1px solid var(--line);background:var(--surface);}
+  .day-detail .dd-head{
+    padding:22px 26px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .day-detail .dd-head h2{font-size:24px;}
+  .day-detail .dd-head .focus{font-size:13.5px;color:var(--muted);margin-top:4px;}
+  .exercise-row{
+    display:grid;
+    grid-template-columns:44px 1fr auto;
+    align-items:center;
+    padding:16px 26px;
+    border-bottom:1px solid var(--line);
+    gap:16px;
+  }
+  .exercise-row:last-child{border-bottom:none;}
+  .ex-icon-box{
+    width:44px;height:44px;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .ex-name{font-size:15px;font-weight:600;}
+  .ex-scheme{font-size:13px;color:var(--muted);margin-top:3px;}
+  .set-dots{display:flex;gap:6px;}
+  .set-dot{
+    width:26px;height:26px;
+    border:1.5px solid var(--line);
+    border-radius:2px;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;color:var(--muted-2);
+    transition:all .12s ease;
+  }
+  .set-dot.done{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+  .rest-note{padding:40px 26px;color:var(--muted);font-size:14.5px;line-height:1.7;}
+
+  .schedule-list{display:flex;flex-direction:column;gap:14px;}
+  .sched-row{
+    border:1px solid var(--line);
+    background:var(--surface);
+    padding:16px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .sched-row:hover{border-color:var(--ink);}
+  .sched-row .sr-left{display:flex;align-items:baseline;gap:16px;}
+  .sched-row .sr-day{font-size:12.5px;color:var(--muted);width:70px;}
+  .sched-row .sr-title{font-family:'Big Shoulders Display';font-weight:700;font-size:18px;}
+  .sched-row .sr-focus{font-size:13px;color:var(--muted);}
+
+  .heat-wrap{
+    border:1px solid var(--line);
+    background:var(--surface);
+    padding:24px 26px;
+    margin-bottom:28px;
+    overflow-x:auto;
+  }
+  .heat-grid{
+    display:grid;
+    grid-auto-flow:column;
+    grid-template-rows:repeat(7,14px);
+    gap:4px;
+  }
+  .heat-cell{width:14px;height:14px;background:var(--line);border-radius:1px;}
+  .heat-cell.done{background:var(--ink);}
+  .heat-legend{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:14px;}
+
+  .log-list{display:flex;flex-direction:column;}
+  .log-row{
+    display:flex;justify-content:space-between;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .log-row .lr-title{font-weight:600;}
+  .log-row .lr-date{color:var(--muted);font-size:13px;}
+  .empty-state{padding:30px 0;color:var(--muted);font-size:14px;}
+
+  .toast{
+    position:fixed;
+    bottom:24px;left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:var(--bg);
+    padding:12px 20px;
+    font-size:13.5px;
+    border-radius:2px;
+    opacity:0;
+    pointer-events:none;
+    transition:all .25s ease;
+    z-index:50;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  /* ---------- guided session overlay ---------- */
+  .guided-overlay{
+    position:fixed;inset:0;
+    background:var(--bg);
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+  }
+  .guided-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 28px;
+    border-bottom:1px solid var(--line);
+  }
+  .guided-progress{
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .guided-close{
+    font-size:13px;
+    color:var(--muted);
+    cursor:pointer;
+    border:1px solid var(--line);
+    padding:8px 14px;
+    border-radius:2px;
+    background:var(--surface);
+  }
+  .guided-close:hover{border-color:var(--ink);color:var(--ink);}
+  .guided-body{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .guided-card{
+    width:100%;
+    max-width:420px;
+    text-align:center;
+  }
+  .guided-icon{
+    width:120px;height:120px;
+    margin:0 auto 22px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .guided-icon svg{width:72px;height:72px;}
+  .guided-ex-name{font-size:26px;margin-bottom:6px;}
+  .guided-ex-scheme{font-size:14px;color:var(--muted);margin-bottom:8px;}
+  .guided-set-label{
+    font-size:13px;
+    color:var(--muted-2);
+    margin-bottom:28px;
+    letter-spacing:0.02em;
+  }
+  .timer-display{
+    font-family:'Big Shoulders Display';
+    font-weight:800;
+    font-size:64px;
+    line-height:1;
+    margin-bottom:8px;
+  }
+  .timer-label{font-size:13px;color:var(--muted);margin-bottom:26px;}
+  .guided-bottom{padding:26px 28px 34px;display:flex;justify-content:center;}
+  .guided-bar-wrap{
+    height:2px;background:var(--line);width:100%;
+  }
+  .guided-bar-fill{height:2px;background:var(--ink);width:0%;transition:width 1s linear;}
+
+  @media (max-width:800px){
+    .app{grid-template-columns:1fr;}
+    .rail{
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      padding:16px 18px;
+      border-right:none;
+      border-bottom:1px solid var(--line);
+      gap:0;
+    }
+    .rail nav{display:none;}
+    .rail-foot{display:none;}
+    .bottom-nav{
+      display:flex;
+      border-bottom:1px solid var(--line);
+      background:var(--surface);
+    }
+    .bottom-nav .nav-item{
+      flex:1;
+      flex-direction:column;
+      gap:4px;
+      justify-content:center;
+      align-items:center;
+      border-left:none;
+      border-bottom:2px solid transparent;
+      padding:10px 4px 9px;
+      font-size:11px;
+    }
+    .bottom-nav .nav-item.active{border-left:none;border-bottom:2px solid var(--ink);}
+    .bottom-nav .nav-item svg{width:20px;height:20px;}
+    main{padding:22px 18px 50px;}
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .week-strip{grid-template-columns:repeat(4,1fr);}
+    .day-cell:nth-child(n+5){border-top:1px solid var(--line);}
+  }
+  @media (min-width:801px){ .bottom-nav{display:none;} }
+</style>
+</head>
+<body>
+
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="brand-mark">Masuk</div>
+    <div class="brand-sub">Isi data singkat untuk memulai program latihan.</div>
+    <form id="login-form">
+      <div class="field">
+        <label for="f-name">Nama</label>
+        <input type="text" id="f-name" required placeholder="Nama lengkap">
+      </div>
+      <div class="field">
+        <label for="f-dob">Tanggal lahir</label>
+        <input type="date" id="f-dob" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="f-height">Tinggi badan (cm)</label>
+          <input type="number" id="f-height" required min="100" max="230" placeholder="170">
+        </div>
+        <div class="field">
+          <label for="f-weight">Berat badan (kg)</label>
+          <input type="number" id="f-weight" required min="30" max="200" placeholder="60">
+        </div>
+      </div>
+      <button type="submit" class="btn big">Masuk</button>
+    </form>
+    <div class="login-note">Data disimpan di perangkat ini untuk personalisasi ringkasan dan progres.</div>
+  </div>
+</div>
+
+<div class="app" id="app-root" style="display:none;">
+  <div class="rail">
+    <div class="brand">
+      <div class="name" id="brand-name">Andika Wijaya</div>
+      <div class="sub" id="brand-sub">Program latihan pribadi</div>
+    </div>
+    <nav id="nav-desktop">
+      <div class="nav-item active" data-page="dashboard">Ringkasan</div>
+      <div class="nav-item" data-page="jadwal">Jadwal</div>
+      <div class="nav-item" data-page="progress">Progres</div>
+      <div class="nav-item" data-page="profil">Profil</div>
+    </nav>
+    <div class="rail-foot">
+      Push · Pull · Leg & Core<br>
+      Rumah + gym Sabtu
+    </div>
+  </div>
+
+  <div>
+    <div class="bottom-nav" id="nav-mobile">
+      <div class="nav-item active" data-page="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Home</div>
+      <div class="nav-item" data-page="jadwal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 9h16"/><path d="M9 4v5"/></svg>Latihan</div>
+      <div class="nav-item" data-page="profil"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 5-5.5 7-5.5s5.5 1.5 7 5.5"/></svg>Profil</div>
+      <div class="nav-item" data-page="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/></svg>Menu</div>
+    </div>
+
+    <main>
+      <div id="page-dashboard"></div>
+      <div id="page-jadwal" style="display:none;"></div>
+      <div id="page-progress" style="display:none;"></div>
+      <div id="page-profil" style="display:none;"></div>
+    </main>
+  </div>
+</div>
+
+<div id="guided-root"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- icons ---------- */
+const S = 'fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+const ICONS = {
+  pushup: `<svg viewBox="0 0 64 64" ${S}><circle cx="12" cy="30" r="5"/><line x1="17" y1="31" x2="50" y2="20"/><line x1="24" y1="32" x2="20" y2="46"/><line x1="40" y1="26" x2="38" y2="46"/><line x1="50" y1="20" x2="50" y2="34"/></svg>`,
+  pike: `<svg viewBox="0 0 64 64" ${S}><circle cx="20" cy="42" r="5"/><line x1="25" y1="40" x2="34" y2="16"/><line x1="34" y1="16" x2="46" y2="40"/><line x1="34" y1="16" x2="34" y2="30"/><line x1="34" y1="30" x2="24" y2="44"/><line x1="34" y1="30" x2="44" y2="44"/></svg>`,
+  dips: `<svg viewBox="0 0 64 64" ${S}><line x1="14" y1="18" x2="14" y2="46"/><line x1="50" y1="18" x2="50" y2="46"/><circle cx="32" cy="20" r="5"/><line x1="32" y1="25" x2="32" y2="40"/><line x1="32" y1="30" x2="14" y2="26"/><line x1="32" y1="30" x2="50" y2="26"/><line x1="32" y1="40" x2="22" y2="50"/><line x1="32" y1="40" x2="42" y2="50"/></svg>`,
+  pullup: `<svg viewBox="0 0 64 64" ${S}><line x1="10" y1="14" x2="54" y2="14"/><circle cx="32" cy="24" r="5"/><line x1="32" y1="29" x2="32" y2="44"/><line x1="20" y1="14" x2="32" y2="30"/><line x1="44" y1="14" x2="32" y2="30"/><line x1="32" y1="44" x2="24" y2="56"/><line x1="32" y1="44" x2="40" y2="56"/></svg>`,
+  curl: `<svg viewBox="0 0 64 64" ${S}><circle cx="30" cy="14" r="5"/><line x1="30" y1="19" x2="30" y2="38"/><line x1="30" y1="24" x2="18" y2="30"/><line x1="18" y1="30" x2="24" y2="18"/><circle cx="24" cy="18" r="3"/><line x1="30" y1="38" x2="24" y2="52"/><line x1="30" y1="38" x2="38" y2="52"/></svg>`,
+  wristcurl: `<svg viewBox="0 0 64 64" ${S}><line x1="10" y1="40" x2="38" y2="40"/><circle cx="44" cy="40" r="6"/><line x1="38" y1="40" x2="38" y2="30"/></svg>`,
+  row: `<svg viewBox="0 0 64 64" ${S}><circle cx="46" cy="18" r="5"/><line x1="43" y1="22" x2="24" y2="34"/><line x1="24" y1="34" x2="46" y2="42"/><line x1="24" y1="34" x2="18" y2="48"/><line x1="24" y1="34" x2="14" y2="30"/><circle cx="14" cy="30" r="3"/><line x1="24" y1="34" x2="30" y2="50"/></svg>`,
+  neck: `<svg viewBox="0 0 64 64" ${S}><circle cx="32" cy="22" r="9"/><line x1="18" y1="22" x2="24" y2="22"/><line x1="40" y1="22" x2="46" y2="22"/><line x1="32" y1="31" x2="32" y2="50"/></svg>`,
+  squat: `<svg viewBox="0 0 64 64" ${S}><circle cx="32" cy="12" r="5"/><line x1="32" y1="17" x2="32" y2="32"/><line x1="32" y1="20" x2="18" y2="16"/><line x1="32" y1="20" x2="46" y2="16"/><line x1="32" y1="32" x2="20" y2="40"/><line x1="20" y1="40" x2="22" y2="54"/><line x1="32" y1="32" x2="44" y2="40"/><line x1="44" y1="40" x2="42" y2="54"/></svg>`,
+  lunge: `<svg viewBox="0 0 64 64" ${S}><circle cx="30" cy="12" r="5"/><line x1="30" y1="17" x2="30" y2="32"/><line x1="30" y1="32" x2="16" y2="40"/><line x1="16" y1="40" x2="16" y2="54"/><line x1="30" y1="32" x2="44" y2="38"/><line x1="44" y1="38" x2="34" y2="48"/><line x1="34" y1="48" x2="46" y2="54"/></svg>`,
+  plank: `<svg viewBox="0 0 64 64" ${S}><circle cx="12" cy="26" r="5"/><line x1="17" y1="28" x2="50" y2="34"/><line x1="20" y1="30" x2="18" y2="44"/><line x1="46" y1="33" x2="48" y2="44"/><line x1="50" y1="34" x2="50" y2="44"/></svg>`,
+  legraise: `<svg viewBox="0 0 64 64" ${S}><circle cx="14" cy="30" r="5"/><line x1="19" y1="32" x2="34" y2="34"/><line x1="34" y1="34" x2="48" y2="14"/><line x1="34" y1="34" x2="42" y2="46"/></svg>`,
+  bench: `<svg viewBox="0 0 64 64" ${S}><line x1="14" y1="18" x2="50" y2="18"/><circle cx="14" cy="18" r="4"/><circle cx="50" cy="18" r="4"/><line x1="32" y1="22" x2="32" y2="24"/><circle cx="32" cy="34" r="5"/><line x1="32" y1="39" x2="32" y2="50"/><line x1="24" y1="50" x2="40" y2="50"/></svg>`,
+  lateral: `<svg viewBox="0 0 64 64" ${S}><circle cx="32" cy="14" r="5"/><line x1="32" y1="19" x2="32" y2="38"/><line x1="32" y1="24" x2="12" y2="20"/><circle cx="12" cy="20" r="3"/><line x1="32" y1="24" x2="52" y2="20"/><circle cx="52" cy="20" r="3"/><line x1="32" y1="38" x2="24" y2="54"/><line x1="32" y1="38" x2="40" y2="54"/></svg>`,
+  pulldown: `<svg viewBox="0 0 64 64" ${S}><line x1="14" y1="10" x2="50" y2="10"/><circle cx="32" cy="20" r="5"/><line x1="32" y1="25" x2="32" y2="40"/><line x1="24" y1="10" x2="32" y2="30"/><line x1="40" y1="10" x2="32" y2="30"/><line x1="32" y1="40" x2="24" y2="52"/><line x1="32" y1="40" x2="40" y2="52"/></svg>`,
+  farmer: `<svg viewBox="0 0 64 64" ${S}><circle cx="32" cy="12" r="5"/><line x1="32" y1="17" x2="32" y2="36"/><line x1="32" y1="22" x2="16" y2="30"/><circle cx="16" cy="34" r="3"/><line x1="32" y1="22" x2="48" y2="30"/><circle cx="48" cy="34" r="3"/><line x1="32" y1="36" x2="24" y2="48"/><line x1="32" y1="36" x2="42" y2="46"/></svg>`,
+};
+function iconSVG(key){ return ICONS[key] || ICONS.pushup; }
+
+/* ---------- data ---------- */
+const DAYS = [
+  { key:'sen', abbr:'Sen', name:'Senin', title:'Push A', focus:'Dada, bahu, triceps', rest:false,
+    exercises:[
+      {name:'Push-Up', scheme:'3 x 8–10', sets:3, icon:'pushup', work_s:35, rest_s:60},
+      {name:'Pike Push-Up', scheme:'3 x 6–8', sets:3, icon:'pike', work_s:30, rest_s:60},
+      {name:'Triceps Dips', scheme:'2 x 8–10', sets:2, icon:'dips', work_s:30, rest_s:60},
+    ]},
+  { key:'sel', abbr:'Sel', name:'Selasa', title:'Pull A', focus:'Punggung, biceps, forearm', rest:false,
+    exercises:[
+      {name:'Pull-Up / Chin-Up (atau Australian Row)', scheme:'3 x semampunya', sets:3, icon:'pullup', work_s:30, rest_s:75},
+      {name:'Bicep Curl', scheme:'3 x 8–10', sets:3, icon:'curl', work_s:30, rest_s:60},
+      {name:'Wrist Curl', scheme:'2 x 12', sets:2, icon:'wristcurl', work_s:25, rest_s:45},
+    ]},
+  { key:'rab', abbr:'Rab', name:'Rabu', title:'Istirahat', focus:'Jalan santai + stretching', rest:true, exercises:[]},
+  { key:'kam', abbr:'Kam', name:'Kamis', title:'Push + Pull ringan', focus:'Variasi volume kecil', rest:false,
+    exercises:[
+      {name:'Incline Push-Up', scheme:'2 x 10', sets:2, icon:'pushup', work_s:30, rest_s:45},
+      {name:'Row Meja', scheme:'2 x 10', sets:2, icon:'row', work_s:30, rest_s:45},
+      {name:'Neck Isometric', scheme:'2 x 10 detik / arah', sets:2, icon:'neck', work_s:30, rest_s:30},
+    ]},
+  { key:'jum', abbr:'Jum', name:'Jumat', title:'Leg & Core', focus:'Kaki dan perut', rest:false,
+    exercises:[
+      {name:'Squat (beban tubuh)', scheme:'3 x 10–12', sets:3, icon:'squat', work_s:40, rest_s:60},
+      {name:'Lunge', scheme:'2 x 8 langkah / kaki', sets:2, icon:'lunge', work_s:40, rest_s:60},
+      {name:'Plank', scheme:'2 x 30–40 detik', sets:2, icon:'plank', work_s:40, rest_s:45},
+      {name:'Leg Raise', scheme:'2 x 10', sets:2, icon:'legraise', work_s:30, rest_s:45},
+    ]},
+  { key:'sab', abbr:'Sab', name:'Sabtu', title:'Gym Day', focus:'Beban ringan–sedang', rest:false,
+    exercises:[
+      {name:'Bench Press / Incline', scheme:'3 x 8', sets:3, icon:'bench', work_s:35, rest_s:90},
+      {name:'Lateral Raise', scheme:'3 x 10', sets:3, icon:'lateral', work_s:30, rest_s:60},
+      {name:'Lat Pulldown', scheme:'3 x 8', sets:3, icon:'pulldown', work_s:35, rest_s:75},
+      {name:"Farmer's Walk", scheme:'2 x 20 meter', sets:2, icon:'farmer', work_s:35, rest_s:60},
+    ]},
+  { key:'min', abbr:'Min', name:'Minggu', title:'Istirahat Total', focus:'Pemulihan penuh', rest:true, exercises:[]},
+];
+
+const MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const WEEKDAY_JS_TO_IDX = [6,0,1,2,3,4,5];
+
+function dateKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function todayDayIndex(){ return WEEKDAY_JS_TO_IDX[new Date().getDay()]; }
+function formatDateLong(d){
+  const dow = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'][d.getDay()];
+  return dow+', '+d.getDate()+' '+MONTHS[d.getMonth()]+' '+d.getFullYear();
+}
+function calcAge(dobStr){
+  const dob = new Date(dobStr);
+  const now = new Date();
+  let age = now.getFullYear()-dob.getFullYear();
+  const m = now.getMonth()-dob.getMonth();
+  if(m<0 || (m===0 && now.getDate()<dob.getDate())) age--;
+  return age;
+}
+
+/* ---------- storage ---------- */
+let profile = null;
+let completedDates = new Set();
+let setState = {};
+
+async function loadProfile(){
+  try{
+    const r = await window.storage.get('profile');
+    if(r && r.value){ profile = JSON.parse(r.value); }
+  }catch(e){ profile = null; }
+}
+async function saveProfile(p){
+  profile = p;
+  try{ await window.storage.set('profile', JSON.stringify(p)); }catch(e){}
+}
+
+let weightLog = [];
+async function loadWeightLog(){
+  try{
+    const r = await window.storage.get('weight-log');
+    if(r && r.value){ weightLog = JSON.parse(r.value); }
+  }catch(e){ weightLog = []; }
+}
+async function saveWeightLog(){
+  try{ await window.storage.set('weight-log', JSON.stringify(weightLog)); }catch(e){}
+}
+function addWeightEntry(dKey, weight){
+  const existing = weightLog.find(w=>w.date===dKey);
+  if(existing){ existing.weight = weight; }
+  else { weightLog.push({date:dKey, weight}); }
+  weightLog.sort((a,b)=> a.date.localeCompare(b.date));
+  saveWeightLog();
+}
+function estimateCalories(){
+  const w = latestWeightVal();
+  if(!w) return {perSession:0, total:0, thisWeek:0};
+  const MET = 6; // latihan beban tubuh / calisthenics intensitas sedang
+  const HOURS_PER_SESSION = 0.75; // asumsi 45 menit per sesi
+  const perSession = Math.round(MET * w * HOURS_PER_SESSION);
+  return {
+    perSession,
+    total: perSession * totalCompleted(),
+    thisWeek: perSession * completedThisWeek(),
+  };
+}
+async function loadStorage(){
+  try{
+    const r = await window.storage.get('completed-dates');
+    if(r && r.value){ completedDates = new Set(JSON.parse(r.value)); }
+  }catch(e){ completedDates = new Set(); }
+  try{
+    const r2 = await window.storage.get('set-state');
+    if(r2 && r2.value){ setState = JSON.parse(r2.value); }
+  }catch(e){ setState = {}; }
+}
+async function saveCompleted(){ try{ await window.storage.set('completed-dates', JSON.stringify([...completedDates])); }catch(e){} }
+async function saveSetState(){ try{ await window.storage.set('set-state', JSON.stringify(setState)); }catch(e){} }
+
+function getSets(dKey, dayKey, exIdx, totalSets){
+  setState[dKey] = setState[dKey] || {};
+  setState[dKey][dayKey] = setState[dKey][dayKey] || {};
+  if(!setState[dKey][dayKey][exIdx]){
+    setState[dKey][dayKey][exIdx] = new Array(totalSets).fill(false);
+  }
+  return setState[dKey][dayKey][exIdx];
+}
+function allSetsDone(dKey, day){
+  if(day.rest) return false;
+  return day.exercises.every((ex,i)=>{
+    const arr = getSets(dKey, day.key, i, ex.sets);
+    return arr.every(Boolean);
+  });
+}
+
+/* ---------- toast ---------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ---------- login ---------- */
+document.getElementById('login-form').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const p = {
+    name: document.getElementById('f-name').value.trim(),
+    dob: document.getElementById('f-dob').value,
+    height: Number(document.getElementById('f-height').value),
+    weight: Number(document.getElementById('f-weight').value),
+  };
+  await saveProfile(p);
+  addWeightEntry(dateKey(new Date()), p.weight);
+  showApp();
+});
+
+function showApp(){
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-root').style.display = 'grid';
+  document.getElementById('brand-name').textContent = profile && profile.name ? profile.name : 'Andika Wijaya';
+  document.getElementById('brand-sub').textContent = 'Program latihan pribadi';
+  render();
+}
+
+/* ---------- routing ---------- */
+let currentPage = 'dashboard';
+let selectedDayKey = null;
+
+function setPage(page){
+  currentPage = page;
+  document.querySelectorAll('.nav-item').forEach(n=> n.classList.toggle('active', n.dataset.page===page));
+  ['dashboard','jadwal','progress','profil'].forEach(p=>{
+    document.getElementById('page-'+p).style.display = (p===page)?'block':'none';
+  });
+  render();
+}
+document.querySelectorAll('.nav-item').forEach(n=> n.addEventListener('click', ()=> setPage(n.dataset.page)));
+
+/* ---------- stats ---------- */
+function computeStreak(){
+  let streak = 0;
+  let d = new Date();
+  while(true){
+    const key = dateKey(d);
+    const dayIdx = WEEKDAY_JS_TO_IDX[d.getDay()];
+    if(DAYS[dayIdx].rest){ d.setDate(d.getDate()-1); continue; }
+    if(completedDates.has(key)){ streak++; d.setDate(d.getDate()-1); } else { break; }
+  }
+  return streak;
+}
+function completedThisWeek(){
+  const now = new Date();
+  const idx = WEEKDAY_JS_TO_IDX[now.getDay()];
+  const monday = new Date(now); monday.setDate(now.getDate()-idx);
+  let count = 0;
+  for(let i=0;i<7;i++){
+    const d = new Date(monday); d.setDate(monday.getDate()+i);
+    if(completedDates.has(dateKey(d))) count++;
+  }
+  return count;
+}
+function totalCompleted(){ return completedDates.size; }
+function latestWeightVal(){
+  if(weightLog.length) return weightLog[weightLog.length-1].weight;
+  return profile ? profile.weight : null;
+}
+function bmi(){
+  const w = latestWeightVal();
+  if(!profile || !profile.height || !w) return null;
+  const h = profile.height/100;
+  return (w/(h*h)).toFixed(1);
+}
+
+/* ---------- dashboard ---------- */
+function renderDashboard(){
+  const el = document.getElementById('page-dashboard');
+  const now = new Date();
+  const tIdx = todayDayIndex();
+  const today = DAYS[tIdx];
+  const tKey = dateKey(now);
+  const isDone = completedDates.has(tKey);
+  const greetName = profile && profile.name ? profile.name.split(' ')[0] : '';
+
+  let exList = '';
+  if(!today.rest) exList = today.exercises.map(ex=>ex.name+' — '+ex.scheme).join(' · ');
+
+  const bmiVal = bmi();
+
+  el.innerHTML = `
+    <div class="page-head">
+      <h1>Halo, ${greetName || 'kamu'}</h1>
+      <div class="date">${formatDateLong(now)}</div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">${computeStreak()}</div><div class="label">Hari beruntun</div></div>
+      <div class="stat"><div class="num">${completedThisWeek()}</div><div class="label">Sesi minggu ini</div></div>
+      <div class="stat"><div class="num">${totalCompleted()}</div><div class="label">Total sesi selesai</div></div>
+      <div class="stat"><div class="num">${bmiVal !== null ? bmiVal : '—'}</div><div class="label">Indeks massa tubuh</div></div>
+    </div>
+
+    <div class="today-card">
+      <div class="eyebrow">Hari ini — ${today.name}</div>
+      <h2>${today.title}</h2>
+      <div class="focus">${today.rest ? today.focus : today.focus + (exList?(' — '+exList):'')}</div>
+      ${today.rest
+        ? `<div style="font-size:14px;color:var(--muted);">Tidak ada latihan terjadwal. Manfaatkan untuk pemulihan.</div>`
+        : `<button class="btn" id="btn-goto-today">Buka sesi hari ini</button>`
+      }
+    </div>
+
+    <section class="block">
+      <h3>Minggu ini</h3>
+      <div class="week-strip" id="week-strip-dash"></div>
+    </section>
+  `;
+
+  renderWeekStrip(document.getElementById('week-strip-dash'), (key)=>{
+    selectedDayKey = key; setPage('jadwal');
+  });
+
+  const gotoBtn = document.getElementById('btn-goto-today');
+  if(gotoBtn) gotoBtn.addEventListener('click', ()=>{ selectedDayKey = today.key; setPage('jadwal'); });
+}
+
+function renderWeekStrip(container, onClick){
+  const tIdx = todayDayIndex();
+  container.innerHTML = DAYS.map((d,i)=>{
+    const hasSets = !d.rest;
+    return `
+      <div class="day-cell ${i===tIdx?'is-today':''}" data-key="${d.key}">
+        <div class="d-abbr">${d.abbr}</div>
+        <div class="d-title">${d.title}</div>
+        <div class="d-dot ${hasSets?'':'empty'}"></div>
+      </div>
+    `;
+  }).join('');
+  container.querySelectorAll('.day-cell').forEach(c=> c.addEventListener('click', ()=> onClick(c.dataset.key)));
+}
+
+/* ---------- jadwal ---------- */
+function renderJadwal(){
+  const el = document.getElementById('page-jadwal');
+  if(!selectedDayKey) selectedDayKey = DAYS[todayDayIndex()].key;
+  const now = new Date();
+  const nKey = dateKey(now);
+  const todayIdx = todayDayIndex();
+  const todayDay = DAYS[todayIdx];
+  const doneToday = completedDates.has(nKey);
+
+  el.innerHTML = `
+    <div class="page-head"><h1>Latihan</h1><div class="date">${formatDateLong(now)}</div></div>
+
+    <section class="block" id="hero-today"></section>
+
+    <section class="block">
+      <h3>Jadwal minggu ini</h3>
+      <div class="schedule-list" id="sched-list"></div>
+    </section>
+    <section class="block"><h3>Detail sesi</h3><div id="day-detail-wrap"></div></section>
+  `;
+
+  const hero = document.getElementById('hero-today');
+  if(todayDay.rest){
+    hero.innerHTML = `
+      <div class="day-detail">
+        <div class="dd-head"><div><h2>${todayDay.title}</h2><div class="focus">Hari ini — ${todayDay.name}</div></div></div>
+        <div class="rest-note">${todayDay.focus}. Waktu otot memperbaiki diri — pastikan tidur cukup dan asupan protein terjaga.</div>
+      </div>
+    `;
+  } else {
+    const exList = todayDay.exercises.map(ex=>ex.name+' — '+ex.scheme).join(' · ');
+    hero.innerHTML = `
+      <div class="today-card">
+        <div class="eyebrow">Hari ini — ${todayDay.name}</div>
+        <h2>${todayDay.title}</h2>
+        <div class="focus">${todayDay.focus} — ${exList}</div>
+        <div class="btn-row">
+          <button class="btn big" id="btn-mulai-latihan" ${doneToday?'disabled':''}>${doneToday?'Sesi hari ini selesai':'Mulai latihan'}</button>
+        </div>
+      </div>
+    `;
+    const startBtn = document.getElementById('btn-mulai-latihan');
+    if(startBtn && !doneToday) startBtn.addEventListener('click', ()=> startGuidedSession(todayDay, nKey));
+  }
+
+  const list = document.getElementById('sched-list');
+  list.innerHTML = DAYS.map(d=>`
+    <div class="sched-row" data-key="${d.key}" style="${d.key===selectedDayKey?'border-color:var(--ink);':''}">
+      <div class="sr-left"><div class="sr-day">${d.name}</div><div class="sr-title">${d.title}</div></div>
+      <div class="sr-focus">${d.focus}</div>
+    </div>
+  `).join('');
+  list.querySelectorAll('.sched-row').forEach(r=> r.addEventListener('click', ()=>{ selectedDayKey = r.dataset.key; renderJadwal(); }));
+
+  renderDayDetail(document.getElementById('day-detail-wrap'), selectedDayKey, nKey);
+}
+
+function renderDayDetail(container, dayKey, nKey){
+  const day = DAYS.find(d=>d.key===dayKey);
+
+  if(day.rest){
+    container.innerHTML = `
+      <div class="day-detail">
+        <div class="dd-head"><div><h2>${day.title}</h2><div class="focus">${day.name}</div></div></div>
+        <div class="rest-note">${day.focus}. Waktu otot memperbaiki diri — pastikan tidur cukup dan asupan protein terjaga.</div>
+      </div>
+    `;
+    return;
+  }
+
+  const doneToday = completedDates.has(nKey);
+  const isToday = DAYS[todayDayIndex()].key===dayKey;
+
+  container.innerHTML = `
+    <div class="day-detail">
+      <div class="dd-head">
+        <div><h2>${day.title}</h2><div class="focus">${day.name} — ${day.focus}</div></div>
+        ${isToday ? `
+          <div class="btn-row">
+            <button class="btn ghost" id="btn-complete" ${doneToday?'disabled':''}>${doneToday?'Sesi selesai':'Tandai selesai manual'}</button>
+          </div>` : ''}
+      </div>
+      ${day.exercises.map((ex,i)=>{
+        const sets = getSets(nKey, day.key, i, ex.sets);
+        return `
+        <div class="exercise-row">
+          <div class="ex-icon-box">${iconSVG(ex.icon)}</div>
+          <div>
+            <div class="ex-name">${ex.name}</div>
+            <div class="ex-scheme">${ex.scheme}</div>
+          </div>
+          <div class="set-dots" data-ex="${i}">
+            ${sets.map((done,si)=>`<div class="set-dot ${done?'done':''}" data-si="${si}">${si+1}</div>`).join('')}
+          </div>
+        </div>
+      `}).join('')}
+    </div>
+  `;
+
+  container.querySelectorAll('.set-dots').forEach(row=>{
+    const exIdx = row.dataset.ex;
+    row.querySelectorAll('.set-dot').forEach(dot=>{
+      dot.addEventListener('click', ()=>{
+        const si = Number(dot.dataset.si);
+        const arr = setState[nKey][day.key][exIdx];
+        arr[si] = !arr[si];
+        dot.classList.toggle('done');
+        saveSetState();
+      });
+    });
+  });
+
+  const completeBtn = document.getElementById('btn-complete');
+  if(completeBtn) completeBtn.addEventListener('click', ()=> finishDay(day, nKey));
+}
+
+function finishDay(day, nKey){
+  if(completedDates.has(nKey)) return;
+  completedDates.add(nKey);
+  saveCompleted();
+  showToast('Sesi '+day.title+' ditandai selesai');
+  renderJadwal();
+  if(currentPage==='dashboard') renderDashboard();
+}
+
+/* ---------- guided session ---------- */
+let guidedTimer = null;
+
+function startGuidedSession(day, nKey){
+  const queue = [];
+  day.exercises.forEach((ex,exIdx)=>{
+    for(let si=0; si<ex.sets; si++) queue.push({exIdx, si});
+  });
+  let step = 0;
+  let phase = 'work'; // 'work' -> 'rest'
+
+  const root = document.getElementById('guided-root');
+
+  function currentEx(){ return day.exercises[queue[step].exIdx]; }
+  function totalSteps(){ return queue.length; }
+
+  function renderStep(){
+    const ex = currentEx();
+    const si = queue[step].si;
+
+    root.innerHTML = `
+      <div class="guided-overlay">
+        <div class="guided-top">
+          <div class="guided-progress">Set ${step+1} dari ${totalSteps()} — ${day.title}</div>
+          <div class="guided-close" id="g-close">Tutup</div>
+        </div>
+        <div class="guided-bar-wrap"><div class="guided-bar-fill" style="width:${Math.round((step/totalSteps())*100)}%"></div></div>
+        <div class="guided-body">
+          <div class="guided-card">
+            <div class="guided-icon">${iconSVG(ex.icon)}</div>
+            <div class="guided-ex-name">${ex.name}</div>
+            <div class="guided-ex-scheme">${ex.scheme}</div>
+            <div class="guided-set-label">Set ${si+1} dari ${ex.sets}</div>
+            <button class="btn big" id="g-start-set">Mulai gerakan (${ex.work_s||30} detik)</button>
+          </div>
+        </div>
+        <div class="guided-bottom"></div>
+      </div>
+    `;
+    document.getElementById('g-close').addEventListener('click', closeGuided);
+    document.getElementById('g-start-set').addEventListener('click', ()=> renderWork(ex.work_s || 30));
+  }
+
+  function renderWork(seconds){
+    const ex = currentEx();
+    const si = queue[step].si;
+    const isLast = step === queue.length-1;
+    let remaining = seconds;
+
+    root.innerHTML = `
+      <div class="guided-overlay">
+        <div class="guided-top">
+          <div class="guided-progress">Set ${step+1} dari ${totalSteps()} — ${day.title}</div>
+          <div class="guided-close" id="g-close">Tutup</div>
+        </div>
+        <div class="guided-bar-wrap"><div class="guided-bar-fill" style="width:${Math.round((step/totalSteps())*100)}%"></div></div>
+        <div class="guided-body">
+          <div class="guided-card">
+            <div class="guided-icon">${iconSVG(ex.icon)}</div>
+            <div class="guided-ex-name">${ex.name}</div>
+            <div class="guided-set-label">Set ${si+1} dari ${ex.sets} — sedang berjalan</div>
+            <div class="timer-display" id="g-timer">${remaining}</div>
+            <div class="timer-label">detik gerakan</div>
+            <button class="btn big" id="g-done-set">Selesai sekarang</button>
+          </div>
+        </div>
+        <div class="guided-bottom"></div>
+      </div>
+    `;
+    document.getElementById('g-close').addEventListener('click', closeGuided);
+
+    function advance(){
+      clearInterval(guidedTimer);
+      markSetDone(queue[step].exIdx, si);
+      if(isLast){ renderComplete(); }
+      else { renderRest(ex.rest_s || 60); }
+    }
+
+    const timerEl = document.getElementById('g-timer');
+    clearInterval(guidedTimer);
+    guidedTimer = setInterval(()=>{
+      remaining--;
+      if(timerEl) timerEl.textContent = remaining;
+      if(remaining<=0){ advance(); }
+    },1000);
+
+    document.getElementById('g-done-set').addEventListener('click', advance);
+  }
+
+  function markSetDone(exIdx, si){
+    const arr = getSets(nKey, day.key, exIdx, day.exercises[exIdx].sets);
+    arr[si] = true;
+    saveSetState();
+  }
+
+  function renderRest(seconds){
+    let remaining = seconds;
+    const nextEx = day.exercises[queue[step+1].exIdx];
+    root.innerHTML = `
+      <div class="guided-overlay">
+        <div class="guided-top">
+          <div class="guided-progress">Istirahat — ${day.title}</div>
+          <div class="guided-close" id="g-close">Tutup</div>
+        </div>
+        <div class="guided-bar-wrap"><div class="guided-bar-fill" style="width:${Math.round(((step+1)/totalSteps())*100)}%"></div></div>
+        <div class="guided-body">
+          <div class="guided-card">
+            <div class="timer-display" id="g-timer">${remaining}</div>
+            <div class="timer-label">detik istirahat</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:22px;">Selanjutnya: ${nextEx.name}</div>
+            <button class="btn big ghost" id="g-skip">Lanjut sekarang</button>
+          </div>
+        </div>
+        <div class="guided-bottom"></div>
+      </div>
+    `;
+    document.getElementById('g-close').addEventListener('click', closeGuided);
+    const timerEl = document.getElementById('g-timer');
+    clearInterval(guidedTimer);
+    guidedTimer = setInterval(()=>{
+      remaining--;
+      if(timerEl) timerEl.textContent = remaining;
+      if(remaining<=0){
+        clearInterval(guidedTimer);
+        step++;
+        renderStep();
+      }
+    },1000);
+    document.getElementById('g-skip').addEventListener('click', ()=>{
+      clearInterval(guidedTimer);
+      step++;
+      renderStep();
+    });
+  }
+
+  function renderComplete(){
+    root.innerHTML = `
+      <div class="guided-overlay">
+        <div class="guided-top">
+          <div class="guided-progress">${day.title} — selesai</div>
+          <div class="guided-close" id="g-close">Tutup</div>
+        </div>
+        <div class="guided-bar-wrap"><div class="guided-bar-fill" style="width:100%"></div></div>
+        <div class="guided-body">
+          <div class="guided-card">
+            <h2 style="font-size:30px;margin-bottom:10px;">Sesi selesai</h2>
+            <div style="font-size:14px;color:var(--muted);margin-bottom:26px;">Semua set untuk ${day.title} sudah ditandai.</div>
+            <button class="btn big" id="g-finish">Selesai & simpan sesi</button>
+          </div>
+        </div>
+        <div class="guided-bottom"></div>
+      </div>
+    `;
+    document.getElementById('g-close').addEventListener('click', closeGuided);
+    document.getElementById('g-finish').addEventListener('click', ()=>{
+      finishDay(day, nKey);
+      closeGuided();
+    });
+  }
+
+  function closeGuided(){
+    clearInterval(guidedTimer);
+    root.innerHTML = '';
+    renderJadwal();
+  }
+
+  renderStep();
+}
+
+/* ---------- progress ---------- */
+function renderProgress(){
+  const el = document.getElementById('page-progress');
+  const now = new Date();
+
+  el.innerHTML = `
+    <div class="page-head"><h1>Progres</h1><div class="date">${formatDateLong(now)}</div></div>
+    <div class="stat-row">
+      <div class="stat"><div class="num">${computeStreak()}</div><div class="label">Hari beruntun</div></div>
+      <div class="stat"><div class="num">${totalCompleted()}</div><div class="label">Total sesi</div></div>
+      <div class="stat"><div class="num">${completedThisWeek()}</div><div class="label">Minggu ini</div></div>
+      <div class="stat"><div class="num">${bmi() !== null ? bmi() : '—'}</div><div class="label">Indeks massa tubuh</div></div>
+    </div>
+    <section class="block">
+      <h3>Riwayat 12 minggu terakhir</h3>
+      <div class="heat-wrap">
+        <div class="heat-grid" id="heat-grid"></div>
+        <div class="heat-legend">
+          <div class="heat-cell"></div><span>Tidak ada sesi</span>
+          <div class="heat-cell done" style="margin-left:8px;"></div><span>Sesi selesai</span>
+        </div>
+      </div>
+    </section>
+    <section class="block"><h3>Riwayat sesi</h3><div class="log-list" id="log-list"></div></section>
+  `;
+
+  const grid = document.getElementById('heat-grid');
+  const weeks = 12;
+  const cells = [];
+  const start = new Date(now); start.setDate(start.getDate() - (weeks*7 - 1));
+  for(let i=0;i<weeks*7;i++){
+    const d = new Date(start); d.setDate(start.getDate()+i);
+    const done = completedDates.has(dateKey(d));
+    cells.push(`<div class="heat-cell ${done?'done':''}" title="${dateKey(d)}"></div>`);
+  }
+  grid.innerHTML = cells.join('');
+
+  const logList = document.getElementById('log-list');
+  const sorted = [...completedDates].sort().reverse();
+  if(sorted.length===0){
+    logList.innerHTML = `<div class="empty-state">Belum ada sesi yang ditandai selesai. Buka halaman Jadwal untuk mulai.</div>`;
+  } else {
+    logList.innerHTML = sorted.slice(0,30).map(k=>{
+      const [y,m,dd] = k.split('-').map(Number);
+      const d = new Date(y, m-1, dd);
+      const dayIdx = WEEKDAY_JS_TO_IDX[d.getDay()];
+      const dayInfo = DAYS[dayIdx];
+      return `<div class="log-row"><div class="lr-title">${dayInfo.title}</div><div class="lr-date">${d.getDate()} ${MONTHS[d.getMonth()]} ${y}</div></div>`;
+    }).join('');
+  }
+}
+
+/* ---------- profil ---------- */
+function weightChartSVG(){
+  const w = 640, h = 180, padL = 34, padR = 12, padT = 16, padB = 26;
+  if(weightLog.length < 2){
+    return `<div class="empty-state">Perlu minimal 2 catatan berat badan untuk menampilkan grafik.</div>`;
+  }
+  const values = weightLog.map(w=>w.weight);
+  let min = Math.min(...values), max = Math.max(...values);
+  if(min===max){ min -= 1; max += 1; }
+  min = Math.floor(min-1); max = Math.ceil(max+1);
+  const n = weightLog.length;
+  const stepX = (w - padL - padR) / (n-1);
+  const yFor = v => padT + (1 - (v-min)/(max-min)) * (h-padT-padB);
+  const points = weightLog.map((w2,i)=> `${padL+i*stepX},${yFor(w2.weight)}`).join(' ');
+  const dots = weightLog.map((w2,i)=> `<circle cx="${padL+i*stepX}" cy="${yFor(w2.weight)}" r="3.5" fill="var(--ink)"/>`).join('');
+  return `
+    <svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;">
+      <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${h-padB}" stroke="var(--line)" stroke-width="1"/>
+      <line x1="${padL}" y1="${h-padB}" x2="${w-padR}" y2="${h-padB}" stroke="var(--line)" stroke-width="1"/>
+      <text x="4" y="${yFor(max)+4}" font-size="10" fill="var(--muted)">${max}</text>
+      <text x="4" y="${yFor(min)+4}" font-size="10" fill="var(--muted)">${min}</text>
+      <polyline points="${points}" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      ${dots}
+    </svg>
+  `;
+}
+
+function renderProfil(){
+  const el = document.getElementById('page-profil');
+  const now = new Date();
+  const age = profile && profile.dob ? calcAge(profile.dob) : '—';
+  const cal = estimateCalories();
+  const latestWeight = weightLog.length ? weightLog[weightLog.length-1].weight : (profile ? profile.weight : '—');
+
+  el.innerHTML = `
+    <div class="page-head"><h1>Profil</h1><div class="date">${formatDateLong(now)}</div></div>
+
+    <div class="today-card">
+      <div class="eyebrow">Data pribadi</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+        <div><div class="ex-scheme">Nama</div><div class="ex-name">${profile ? profile.name : '—'}</div></div>
+        <div><div class="ex-scheme">Usia</div><div class="ex-name">${age} tahun</div></div>
+        <div><div class="ex-scheme">Tinggi badan</div><div class="ex-name">${profile ? profile.height : '—'} cm</div></div>
+        <div><div class="ex-scheme">Berat badan saat ini</div><div class="ex-name">${latestWeight} kg</div></div>
+      </div>
+    </div>
+
+    <section class="block">
+      <h3>Perbarui berat badan</h3>
+      <div class="today-card" style="padding:22px 24px;">
+        <div class="field-row" style="align-items:end;">
+          <div class="field" style="margin-bottom:0;">
+            <label for="p-weight">Berat badan sekarang (kg)</label>
+            <input type="number" id="p-weight" min="30" max="200" value="${latestWeight}">
+          </div>
+          <button class="btn" id="p-save-weight" style="height:44px;">Simpan</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h3>Grafik perkembangan berat badan</h3>
+      <div class="heat-wrap">${weightChartSVG()}</div>
+    </section>
+
+    <section class="block">
+      <h3>Perkiraan kalori terbakar</h3>
+      <div class="stat-row" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat"><div class="num">${cal.perSession}</div><div class="label">Per sesi (kkal)</div></div>
+        <div class="stat"><div class="num">${cal.thisWeek}</div><div class="label">Minggu ini (kkal)</div></div>
+        <div class="stat"><div class="num">${cal.total}</div><div class="label">Total (kkal)</div></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted-2);margin-top:12px;line-height:1.6;">
+        Perkiraan berdasarkan intensitas latihan beban tubuh (6 MET), durasi 45 menit per sesi, dan berat badan terakhir yang tercatat. Angka ini estimasi kasar, bukan pengukuran presisi.
+      </div>
+    </section>
+  `;
+
+  document.getElementById('p-save-weight').addEventListener('click', ()=>{
+    const val = Number(document.getElementById('p-weight').value);
+    if(!val || val<30 || val>200) return;
+    profile.weight = val;
+    saveProfile(profile);
+    addWeightEntry(dateKey(new Date()), val);
+    showToast('Berat badan diperbarui');
+    renderProfil();
+  });
+}
+
+/* ---------- master render ---------- */
+function render(){
+  if(currentPage==='dashboard') renderDashboard();
+  if(currentPage==='jadwal') renderJadwal();
+  if(currentPage==='progress') renderProgress();
+  if(currentPage==='profil') renderProfil();
+}
+
+/* ---------- init ---------- */
+(async function init(){
+  await loadProfile();
+  await loadStorage();
+  await loadWeightLog();
+  if(profile){ showApp(); }
+  else { document.getElementById('login-screen').style.display='flex'; }
+})();
+</script>
+</body>
+</html>
